@@ -1,0 +1,13 @@
+{
+  "name": "playershunt-launch-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Premium PlayersHunt launch landing page",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

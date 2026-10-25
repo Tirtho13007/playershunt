@@ -1,61 +1,66 @@
-# PlayersHunt — Animated Launch Landing Page
+# PlayersHunt — Launch Landing Page
 
-Premium, responsive coming-soon landing page for PlayersHunt.com with an animated countdown to **January 1, 2027 at 00:00 Bangladesh time (UTC+06:00)**, animated feature cards, mobile navigation, and an optional Supabase-backed early-access form.
+A responsive, dark premium launch page for PlayersHunt, a global football talent discovery concept. The page is set to launch on **January 1, 2027 (Dhaka time)** and is structured for simple deployment to Heroku from GitHub.
 
-## Files
+## Included
 
-- `index.html` — page markup and feature sections
-- `styles.css` — responsive premium dark/football visual design and animations
-- `script.js` — countdown, reveal animations, mobile menu, waitlist form submission
-- `config.js` — public Supabase client configuration (empty until set)
-- `supabase-waitlist.sql` — table and insert-only RLS policy for early access
-- `server.js` — tiny Node HTTP server to serve the site on Heroku without dependencies
+- Responsive desktop and mobile navigation
+- Live launch countdown to 1 January 2027
+- Find Players, Scouting & Talent Discovery, Trials & circulars, Player Highlights
+- Global football reach section for Europe, the Americas, Africa and Asia
+- Searchable/filterable sample player cards
+- Wishlist drawer with browser-local persistence
+- Profile-preview modal
+- Email waitlist form with client-side validation and browser-local persistence
+- Intersection-based reveal animations and reduced-motion support
+- Lightweight Node.js server; no build step and no runtime dependency installs needed
 
 ## Run locally
 
-Requires Node.js 22.x.
+Requires Node.js 20 or newer.
 
 ```bash
 npm start
 ```
 
-Open `http://localhost:3000`.
+Then open `http://localhost:3000`.
 
-## Optional: activate the waitlist form
+## Push to GitHub
 
-1. Create a Supabase project.
-2. In Supabase SQL Editor, run `supabase-waitlist.sql` once.
-3. In Supabase Project Settings, copy the Project URL and the **publishable key** (or legacy anon key). Never use the `service_role`/secret key in the browser.
-4. Set those values in `config.js`:
+Create an empty GitHub repository, then run these commands from this project folder:
 
-```js
-window.PLAYERSHUNT_CONFIG = {
-  supabaseUrl: "https://YOUR_PROJECT.supabase.co",
-  supabaseAnonKey: "YOUR_PUBLIC_PUBLISHABLE_KEY"
-};
+```bash
+git init
+git add .
+git commit -m "Build PlayersHunt launch landing page"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git push -u origin main
 ```
 
-The table is intentionally insert-only for public visitors; there is no public SELECT policy for email addresses. Add proper rate limiting/CAPTCHA and review privacy/consent requirements before promoting the form widely. The included honeypot is only a basic spam deterrent.
+Replace the remote URL with your actual GitHub repository URL.
 
-Until this is configured, the form tells visitors that signups are not connected; it does not pretend that their email was saved.
+## Deploy on Heroku
 
-## Deploy to Heroku
+1. Create or open a Heroku app.
+2. Connect the GitHub repository in **Deploy**.
+3. Select the `main` branch and deploy.
+4. Open the app URL and test it on both desktop and mobile.
 
-**Important:** deploying this as the root of your existing `playershunt` GitHub repository will replace the current app code with this standalone landing page. Back up the existing repository/app first. If your current application already has a React/Next app, integrate the HTML/CSS/JS into that app instead of replacing its package and server files.
+The included `Procfile` runs `node server.js`. The server reads Heroku's `PORT` environment variable automatically.
 
-For a standalone deployment:
+## Before launch — important production notes
 
-1. Put these files in the root of a dedicated GitHub repository (or a backed-up launch branch).
-2. Commit and push the code. Do not commit passwords or private secrets.
-3. In Heroku Dashboard → app → Deploy, connect the repository and select the intended branch.
-4. Deploy the branch. Heroku should detect the Node.js app and use `npm start`.
-5. Open the app and check the countdown, section links, mobile nav and form.
-6. If connecting a custom domain, confirm its DNS and HTTPS settings in Heroku.
+- **Waitlist:** the current form is a front-end preview and saves emails only in the visitor's browser via `localStorage`. It does **not** send emails to Vantargo or a mailing list. Connect a real form endpoint or an email provider before collecting launch registrations.
+- **Wishlist:** saved profiles are stored locally in the visitor's browser, not in a user account or shared database.
+- **Sample data:** the player names and profile stats are fictional sample content used to demonstrate the interface, not verified real footballer data.
+- **Images and fonts:** the bespoke hero image is stored locally in `assets/hero-player.webp`; feature/player images and Google Fonts are loaded from external URLs and therefore require internet access in the visitor's browser. Replace these with licensed production assets before a commercial launch if required.
+- **Brand/legal:** “Vantargo” appears in the footer as requested. Check trademark, privacy and applicable data-protection requirements before launch.
 
-This small landing page does not require a Gemini API key. The Supabase URL and public key are only needed to store waitlist signups.
+## Project files
 
-## Notes
-
-- Countdown target is midnight on January 1, 2027 in Bangladesh (UTC+06:00).
-- Google Fonts are loaded remotely; system fallback fonts remain available if the font service is blocked.
-- Feature art is CSS illustration, so no third-party player photos are required.
+- `index.html` — page structure and content
+- `styles.css` — visual design, responsive layout and animations
+- `script.js` — countdown, mobile menu, search/filter, wishlist, modal and waitlist preview
+- `server.js` — dependency-free Node.js static server for Heroku
+- `Procfile` — Heroku web process
